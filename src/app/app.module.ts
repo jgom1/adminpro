@@ -13,7 +13,10 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register.component';
 
-// Services
+// Services importados como módulo.
+import { ServiceModule } from './services/service.module';
+
+
 
 @NgModule({
   declarations: [
@@ -25,10 +28,10 @@ import { RegisterComponent } from './login/register.component';
     BrowserModule,
     PagesModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ServiceModule
   ],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
