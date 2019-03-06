@@ -1,3 +1,56 @@
-<p>
-  progress works!
-</p>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Barra de progreso</h4>
+        <div class="progress">
+          <!--[attr.aria-valuenow] e [style.width] son atributos propios-->
+          <div
+            class="progress-bar progress-bar-striped progress-bar-animated"
+            role="progressbar"
+            Atributo
+            personalizado
+            [attr.aria-valuenow]="progreso_azul"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [style.width]="progreso_azul + '%'"
+          ></div>
+        </div>
+        <br />
+        <div class="progress">
+          <!--[attr.aria-valuenow] e [style.width] son atributos propios-->
+          <div
+            class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+            role="progressbar"
+            Atributo
+            personalizado
+            [attr.aria-valuenow]="progreso_verde"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            [style.width]="progreso_verde + '%'"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6">
+    <div class="card">
+      <div class="card-body">
+        <!--Leyenda vai sen corchetes por se lle pasa un string directamente e non unha variable.-->
+        <!--Progreso vai con chaves porque se do contrario envía o valor oma un string e non coma un number.-->
+        <!--Todos os eventos emitidos reciben un $event.-->
+        <app-incrementador leyenda="Elemento 1" [progreso]="progreso_azul" (cambioValor)="progreso_azul = $event"></app-incrementador>
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="card">
+      <div class="card-body">
+        <app-incrementador leyenda="Elemento 2" [progreso]="progreso_verde" (cambioValor)="progreso_verde = $event"></app-incrementador>
+      </div>
+    </div>
+  </div>
+</div>
