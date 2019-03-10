@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-// Poder chamar función de fora de angular. Neste caso de assets/js/custom.js
+// Poder chamar cargar scripts externos en componentes de Angular. Neste caso de assets/js/custom.js
 declare function init_plugins();
 
 @Component({
