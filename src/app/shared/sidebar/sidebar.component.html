@@ -15,17 +15,19 @@
             <li><a routerLink="javascript:void()">My Balance</a></li>
             <li><a routerLink="javascript:void()">Inbox</a></li>
             <li><a routerLinkActive="active" routerLink="/account-settings">Account Setting</a></li>
-            <li><a routerLink="/login">Logout</a></li>
+            <!--Pónselle a class pointer porque ao borrarlle o href perde o cambio de icono no rato ao poñerlle sobre o enlace.-->
+            <li><a (click)="_usuarioService.logout()" class="pointer">Logout</a></li>
           </ul>
         </li>
         <li class="nav-devider"></li>
         <li class="nav-small-cap">PERSONAL</li>
-        <li *ngFor="let menu of _sidebar.menu"> 
-          <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i
-              [class]="menu.icono"></i><span class="hide-menu">{{ menu.titulo }}<span
-                class="label label-rouded label-themecolor pull-right"> {{ menu.submenu.length }} </span></span></a>
+        <li *ngFor="let menu of _sidebar.menu">
+          <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i [class]="menu.icono"></i><span
+              class="hide-menu">{{ menu.titulo }}<span class="label label-rouded label-themecolor pull-right">
+                {{ menu.submenu.length }} </span></span></a>
           <ul aria-expanded="false" class="collapse">
-            <li *ngFor="let submenu of menu.submenu"><a routerLinkActive="active" [routerLink]="[submenu.url]">{{ submenu.titulo }}</a></li>
+            <li *ngFor="let submenu of menu.submenu"><a routerLinkActive="active"
+                [routerLink]="[submenu.url]">{{ submenu.titulo }}</a></li>
           </ul>
         </li>
       </ul>

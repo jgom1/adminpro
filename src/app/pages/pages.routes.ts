@@ -1,6 +1,9 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
+// Guard
+import { LoginGuardGuard } from './../services/guards/login-guard.guard';
+
 // Componentes
 import { PagesComponent } from "./pages.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
@@ -14,6 +17,7 @@ const pageRoutes: Routes = [
   {
     path: "",
     component: PagesComponent,
+    canActivate: [LoginGuardGuard], // Guard para protexer estas rutas mediante login.
     children: [
       // A propiedade data é opcional e nela pódense meter datos adicionais.
       // Neste caso un obxeto que dentro leva o título da páxina para usar nas breadcrumbs.

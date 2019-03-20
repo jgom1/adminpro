@@ -151,7 +151,8 @@
               <li role="separator" class="divider"></li>
               <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+              <!--Pónselle a class pointer porque ao borrarlle o href perde o cambio de icono no rato ao poñerlle sobre o enlace.-->
+              <li><a (click)="_usuarioService.logout()" class="pointer"><i class="fa fa-power-off"></i> Logout</a></li>
             </ul>
           </div>
         </li>
