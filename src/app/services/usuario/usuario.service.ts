@@ -8,8 +8,9 @@ import { URL_SERVICIOS } from './../../config/config';
 
 // Models
 import { Usuario } from './../../models/usuario.model';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
 
+// Servicios
+import { SubirArchivoService } from './../subir-archivo/subir-archivo.service';
 
 @Injectable( {
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class UsuarioService {
   usuario: Usuario;
   token: string;
 
-  constructor ( public http: HttpClient, public router: Router ) {
+  constructor ( public http: HttpClient, public router: Router, public _subirArchivoService: SubirArchivoService ) {
     console.log( 'Servicio de usuario listo' );
     // Cada vez que o servicio se inicializa, inicialízanse tamén as propiedades da clase.
     this.cargarStorage();
@@ -33,7 +34,7 @@ export class UsuarioService {
 
   cargarStorage () {
     // Función que mira no local storage se están cargados o token e usuario e inicializa as propieadades da clase.
-    if ( localStorage.getItem( 'toke' ) ) {
+    if ( localStorage.getItem( 'token' ) ) {
       this.token = localStorage.getItem( 'token' );
       this.usuario = JSON.parse( localStorage.getItem( 'usuario' ) );
     } else {
@@ -61,6 +62,7 @@ export class UsuarioService {
     // Borrar os datos gardados no local storage.
     localStorage.removeItem( 'token' );
     localStorage.removeItem( 'usuario' );
+    localStorage.removeItem( 'id' );
     // Redireccionar á pantalla do login tras desloguearse.
     this.router.navigate(['/login']);
   }
@@ -69,7 +71,7 @@ export class UsuarioService {
     // Construir a url para facer a chamada ao servidor.
     let url = URL_SERVICIOS + '/login/google';
     // Facer a petición POST. O token mándase como un obxeto, ao ser ECMA 6 pódese poñer token en lugar de token: token.
-    return this.http.post( url, { token: token } ).pipe(
+    return this.http.post( url, { token } ).pipe(
       map( ( resp: any ) => {
         // Gardar os datos da resposta no local storage.
         this.guardarStorage( resp.id, resp.token, resp.usuario );
@@ -78,7 +80,6 @@ export class UsuarioService {
       } )
     );
   }
-
 
   login ( usuario: Usuario, recordar: boolean = false ) {
     // Para facer un login recibimos un usuario e a opción recuérdame do formulario.
@@ -116,6 +117,41 @@ export class UsuarioService {
       swal( 'Usario creado', usuario.email, 'success' );
       return resp.usuario;
     } ) );
+  }
+
+  actualizarUsuario ( usuario: Usuario ) {
+    // Crear a url para facer o PUT de actualizar usuario. URL_SERVICIOS-> http://localhost:3000
+    let url = URL_SERVICIOS + '/usuario/' + usuario._id;
+    // Pasarlle o token polo url. Neste caso está configurado así.
+    url += '?token=' + this.token;
+    // Realizar a chamada put ao servidor para actualizar os datos do usuario (nome + email).
+    return this.http.put( url, usuario ).pipe(
+      map((resp: any) => {
+        //Actualizar o local storage. O servidor devolve os datos do usuario actualizado na resposta.
+        this.guardarStorage( resp.usuario._id, this.token, resp.usuario );
+        // Mostrar alerta indicando que se actualizaou o usuario.
+        swal('Usuario actualizado', usuario.nombre, 'success');
+        // Para indicar que todo se realizou correctamente devolver un true.
+        return true;
+      })
+    );
+  }
+
+  cambiarImagen(archivo: File, id: string){
+    // Función que chama ao servicio de subir-archivo para subir a imaxe ao servidor.
+    // Neste caso únicamente se cambia a imaxe dun usuario, polo que o tipo vai ser sempre usuarios.
+    // A función subirArchivo devolve unha promesa.
+    this._subirArchivoService.subirArchivo(archivo,'usuarios',id).then((resp: any)=>{
+      // Se todo vai ben, asignar a nova imaxe (devolta polo servidor) á imaxe do obxeto usuario.
+      this.usuario.img = resp.usuario.img;
+      // Enviar unha alerta ao usuario.
+      swal('Imagen Actualizada', this.usuario.nombre, 'success');
+      // Actualizar o local Storage.
+      this.guardarStorage(id, this.token, this.usuario);
+    }).catch(resp=>{
+      // Se falla algo...
+      console.error( resp );
+    });
   }
 
 

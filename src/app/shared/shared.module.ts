@@ -2,6 +2,10 @@ import { CommonModule } from '@angular/common'; // Necesario para facer directiv
 import { RouterModule } from '@angular/router'; // Necesario para facer routerLink e routerActive
 import { NgModule } from '@angular/core';
 
+// Pipes
+import { PipesModule } from '../pipes/pipes.module';
+
+
 // Componentes
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
@@ -17,7 +21,8 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
     ],
     imports: [
         RouterModule,
-        CommonModule
+        CommonModule,
+        PipesModule
     ],
     exports: [
         HeaderComponent,

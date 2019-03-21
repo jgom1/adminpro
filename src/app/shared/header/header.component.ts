@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+// Models
+import { Usuario } from './../../models/usuario.model';
+
 // Servicios
 import { UsuarioService } from './../../services/service.index';
 
@@ -10,9 +13,13 @@ import { UsuarioService } from './../../services/service.index';
 })
 export class HeaderComponent implements OnInit {
 
+  usuario: Usuario;
+
   constructor(public _usuarioService:UsuarioService) { }
 
   ngOnInit() {
+    // Asignar a variable usuario do servicio usuario cando se inicie o componente.
+    this.usuario = this._usuarioService.usuario;
   }
 
 }

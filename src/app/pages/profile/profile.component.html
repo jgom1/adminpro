@@ -1,0 +1,49 @@
+<div class="row animated fadeIn">
+  <div class="col-lg-7">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Perfil del usuario</h4>
+        <h6 class="card-subtitle">{{ usuario.nombre}}</h6>
+        <form ngNativeValidate #f="ngForm" (ngSubmit)="guardar(f.value)" class="form p-t-20">
+          <div class="form-group">
+            <label for="exampleInputuname">Nombre del usuario</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-user"></i></div>
+              <input [ngModel]="usuario.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del usuario" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Correo electrónico</label>
+            <div class="input-group">
+              <div class="input-group-addon"><i class="ti-email"></i></div>
+              <!--Se o usuario é de google, que non poida modificar o correo electrónico.-->
+              <input [ngModel]="usuario.email" [disabled]="usuario.google" name="email" type="email" class="form-control"  placeholder="Correo del usuario" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success waves-effect waves-light m-r-10"><i class="fa fa-save"></i>
+            Guardar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-body text-center">
+        <h4 class="card-title">Fotografía del usuario</h4>
+        <h6 class="card-subtitle">{{ usuario.nombre}}</h6>
+        <!--Se a imaxe temporal(previsualización da imaxe seleccionada no imput file) non existe(non hai ningunha imaxe seleccionada), mostrar a imaxe do usuario-->
+        <img *ngIf="!imagenTemp"  [src]="usuario.img | imagen" alt="Imagen usuario" class="w150 mb-3">
+        <!--Previsualización da imaxe seleccionada no input file.-->
+        <img *ngIf="imagenTemp" [src]="imagenTemp" alt="Imagen usuario" class="w150 mb-3">
+        <!--O change fai que se chame a función seleccionImage() cada vez que o file cambia e recibimos a imaxe que ven no evento.-->
+        <input (change)="seleccionImage($event.target.files[0])" type="file" name="" id="">
+        <br><br>
+        <!--Este botón úsase para subir a imaxe e estará deshabilitado se non hai unha imaxe para subir.-->
+        <button (click)="cambiarImagen()" [disabled]="!imagenSubir" type="button" class="btn btn-success btn-block waves-effect waves-light m-r-10"><i class="fa fa-file"></i>
+          Actualizar foto</button>
+      </div>
+    </div>
+  </div>
+
+</div>
