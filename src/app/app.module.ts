@@ -16,8 +16,6 @@ import { RegisterComponent } from './login/register.component';
 // Services importados como módulo.
 import { ServiceModule } from './services/service.module';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

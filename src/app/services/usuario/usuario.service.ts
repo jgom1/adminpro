@@ -21,7 +21,6 @@ export class UsuarioService {
   token: string;
 
   constructor ( public http: HttpClient, public router: Router, public _subirArchivoService: SubirArchivoService ) {
-    console.log( 'Servicio de usuario listo' );
     // Cada vez que o servicio se inicializa, inicialízanse tamén as propiedades da clase.
     this.cargarStorage();
   }
@@ -64,7 +63,7 @@ export class UsuarioService {
     localStorage.removeItem( 'usuario' );
     localStorage.removeItem( 'id' );
     // Redireccionar á pantalla do login tras desloguearse.
-    this.router.navigate(['/login']);
+    this.router.navigate( [ '/login' ] );
   }
 
   loginGoogle ( token: string ) {
@@ -126,33 +125,68 @@ export class UsuarioService {
     url += '?token=' + this.token;
     // Realizar a chamada put ao servidor para actualizar os datos do usuario (nome + email).
     return this.http.put( url, usuario ).pipe(
-      map((resp: any) => {
-        //Actualizar o local storage. O servidor devolve os datos do usuario actualizado na resposta.
-        this.guardarStorage( resp.usuario._id, this.token, resp.usuario );
+      map( ( resp: any ) => {
+        // Se o usuario actualizado é o mesmo que o usuario logueado.
+        if(usuario._id === this.usuario._id){
+          //Actualizar o local storage. O servidor devolve os datos do usuario actualizado na resposta.
+          this.guardarStorage( resp.usuario._id, this.token, resp.usuario );
+        }
         // Mostrar alerta indicando que se actualizaou o usuario.
-        swal('Usuario actualizado', usuario.nombre, 'success');
+        swal( 'Usuario actualizado', usuario.nombre, 'success' );
         // Para indicar que todo se realizou correctamente devolver un true.
+        return true;
+      } )
+    );
+  }
+
+  cambiarImagen ( archivo: File, id: string ) {
+    // Función que chama ao servicio de subir-archivo para subir a imaxe ao servidor.
+    // Neste caso únicamente se cambia a imaxe dun usuario, polo que o tipo vai ser sempre usuarios.
+    // A función subirArchivo devolve unha promesa.
+    this._subirArchivoService.subirArchivo( archivo, 'usuarios', id ).then( ( resp: any ) => {
+      // Se todo vai ben, asignar a nova imaxe (devolta polo servidor) á imaxe do obxeto usuario.
+      this.usuario.img = resp.usuario.img;
+      // Enviar unha alerta ao usuario.
+      swal( 'Imagen Actualizada', this.usuario.nombre, 'success' );
+      // Actualizar o local Storage.
+      this.guardarStorage( id, this.token, this.usuario );
+    } ).catch( resp => {
+      // Se falla algo...
+      console.error( resp );
+    } );
+  }
+
+  cargarUsuarios ( desde: number = 0 ) {
+    // Función para obter usuarios do servidor.
+    // Parámetro desde é un parámetro da petición usado para paxinar os resultados.
+    // Url de chamada ao servidor. Ex: http://localhost:3000/usuario?desde=0
+    let url = URL_SERVICIOS + '/usuario?desde=' + desde;
+    return this.http.get( url );
+  }
+
+  buscarUsuarios ( termino: string ) {
+    // Función para buscar usuarios en función dun termo dado.
+    // Url da chamada ao servidor. Ex: http://localhost:3000/busqueda/coleccion/usuarios/test1
+    let url = URL_SERVICIOS + '/busqueda/coleccion/usuarios/' + termino;
+    return this.http.get( url ).pipe(
+      map( ( resp: any ) => {
+        // Devolver unicamente o array usuarios da resposta.
+        return resp.usuarios;
+      } )
+    );
+  }
+
+  borrarUsuario ( id: string ) {
+    // Función para borrar un usuario.
+    // Url da chamada ao servidor. Ex: http://localhost:3000/usuario/5c86a1203c59b30ddcfee1a4?token=123sdfuhsiudfh
+    let url = URL_SERVICIOS + '/usuario/' + id + '?token=' + this.token;
+    return this.http.delete( url ).pipe(
+      map(rep=>{
+        // Mostrar alert indicando que o usuario se borrou correctamente.
+        swal('Usuario borrado', 'El usuario ha sido eliminado correctamente', 'success');
         return true;
       })
     );
   }
-
-  cambiarImagen(archivo: File, id: string){
-    // Función que chama ao servicio de subir-archivo para subir a imaxe ao servidor.
-    // Neste caso únicamente se cambia a imaxe dun usuario, polo que o tipo vai ser sempre usuarios.
-    // A función subirArchivo devolve unha promesa.
-    this._subirArchivoService.subirArchivo(archivo,'usuarios',id).then((resp: any)=>{
-      // Se todo vai ben, asignar a nova imaxe (devolta polo servidor) á imaxe do obxeto usuario.
-      this.usuario.img = resp.usuario.img;
-      // Enviar unha alerta ao usuario.
-      swal('Imagen Actualizada', this.usuario.nombre, 'success');
-      // Actualizar o local Storage.
-      this.guardarStorage(id, this.token, this.usuario);
-    }).catch(resp=>{
-      // Se falla algo...
-      console.error( resp );
-    });
-  }
-
 
 }

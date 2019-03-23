@@ -13,6 +13,7 @@ import { AccountSettingsComponent } from "./account-settings/account-settings.co
 import { PromesasComponent } from "./promesas/promesas.component";
 import { RxjsComponent } from "./rxjs/rxjs.component";
 import { ProfileComponent } from './profile/profile.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
 
 const pageRoutes: Routes = [
   {
@@ -55,6 +56,13 @@ const pageRoutes: Routes = [
         path: "profile",
         component: ProfileComponent,
         data: { titulo: "Perfil del usuario" }
+      },
+
+      // Mantenimientos
+      {
+        path: "usuarios",
+        component: UsuariosComponent,
+        data: { titulo: "Mantenimiento de usuarios" }
       },
       { path: "", component: DashboardComponent }
     ]
