@@ -11,6 +11,7 @@ import {
   MedicoService,
   HospitalService,
   LoginGuardGuard,
+  AdminGuard,
   SubirArchivoService
 } from './service.index';
 
@@ -29,6 +30,7 @@ import {
     MedicoService,
     HospitalService,
     LoginGuardGuard,
+    AdminGuard,
     SubirArchivoService,
     ModalUploadService
   ]

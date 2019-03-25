@@ -23,6 +23,8 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     // Asignar a variable usuario do servicio usuario cando se inicie o componente.
     this.usuario = this._usuarioService.usuario;
+     // Ao iniciarse o componente da sidebar asigna o valor do menú obtido do servidor na propiedade manú da clase para imprimilo no html.
+     this._sidebar.cargarMenu();
   }
 
 }
