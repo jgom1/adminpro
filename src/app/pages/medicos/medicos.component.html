@@ -1,0 +1,52 @@
+<!--Buscador-->
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <input #input (keyup)="buscarMedico(input.value)" type="text" class="form-control"
+          placeholder="Buscar médico...">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Tabla con resultados-->
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="text-right">
+          <button [routerLink]="['/medico','nuevo']" class="btn waves-effect waves-light btn-rounded btn-primary"><i
+              class="fa fa-plus"></i> Crear
+            médico</button>
+        </div>
+        <h3 class="card-title">Médicos registrados ( <small> {{ _medicoService.totalMedicos }} </small> )</h3>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Foto</th>
+              <th>Médico</th>
+              <th>Hospital</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let medico of medicos">
+              <td><img (click)="actualizarImagen(hospital)" [src]="medico.img | imagen:'medico'"
+                  alt="Imagen del médico{{ medico.nombre }}" class="img-50 pointer"></td>
+              <td>{{ medico.nombre }}</td>
+                  <!--Ao mellor hai algún médico que non ten hospital.-->
+              <td> {{ (medico.hospital)?medico.hospital.nombre:'Sin hospital asignado' }}</td>
+              <td>
+                <button [routerLink]="['/medico', medico._id]" class="btn btn-primary mr-1"><i
+                    class="fa fa-save"></i></button>
+                <button (click)="borrarMedico(medico)" class="btn btn-danger ml-1"><i
+                    class="fa fa-trash-o"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
