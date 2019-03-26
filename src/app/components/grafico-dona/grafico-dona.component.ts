@@ -9,9 +9,9 @@ import { SingleDataSet } from 'ng2-charts';
 })
 export class GraficoDonaComponent implements OnInit {
 
-  @Input() private data: SingleDataSet = [];
-  @Input() private labels: string[] = [];
-  @Input() private chartType: ChartType = 'doughnut';
+  @Input() public data: SingleDataSet = [];
+  @Input() public labels: string[] = [];
+  @Input() public chartType: ChartType = 'doughnut';
 
   constructor() { }
 

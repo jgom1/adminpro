@@ -27,6 +27,27 @@ export class UsuarioService {
     this.cargarStorage();
   }
 
+  renuevaToken(){
+    // Función para renovar o token por 4 horas máis.
+    // Url de chamada ao servidor. Ex: http://localhost:3000/login/renuevatoken?token=eyJhbGciOiJIUzI1NiIsInR5cCI
+    let url = URL_SERVICIOS + '/login/renuevatoken?token=' + this.token;
+    return this.http.get(url).pipe(
+      map((resp:any)=>{
+        // Actualizar o token actual co token novo.
+        this.token = resp.token;
+        // Actualizalo no local storage(poderíase facer tamén chamando á función guardarStorage())
+        localStorage.setItem( 'token', this.token ); // Gardar o token, que dura 4h.
+        return true;
+      }),
+      catchError(err=>{
+        // Se hai un erro, lanzalo.
+        this.router.navigate(['/login']);
+        swal( 'No se pudo renovar el token', err.mensaje, 'error' );
+        return throwError( err );
+      })
+    );
+  }
+
   estaLogueado(): boolean {
     // Devolve un true ou un false en función de se o usuario está loguado ou non comprobando que a propiedade token teñan algon gardado.
     // O de poñer maior que 5 é por poñer algo, pero simplemente se pretende comprobar que token teñea algo gardado.

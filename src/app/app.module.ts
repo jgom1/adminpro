@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Módulos propios
 import { PagesModule } from './pages/pages.module';
+import { SharedModule } from './shared/shared.module';
 
 // Rutas
 import { AppRoutingModule } from './app.routes';
@@ -12,6 +13,7 @@ import { AppRoutingModule } from './app.routes';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './login/register.component';
+import { PagesComponent } from './pages/pages.component';
 
 // Services importados como módulo.
 import { ServiceModule } from './services/service.module';
@@ -20,15 +22,17 @@ import { ServiceModule } from './services/service.module';
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    PagesComponent
   ],
   imports: [
     BrowserModule,
-    PagesModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    ServiceModule
+    ServiceModule,
+    //PagesModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

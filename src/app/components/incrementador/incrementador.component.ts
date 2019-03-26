@@ -11,8 +11,8 @@ export class IncrementadorComponent implements OnInit {
   // @ViewChild identifica elemento no html con #txtProgress.
   @ViewChild('txtProgress') txtProgress: ElementRef;
 
-  @Input() private leyenda: string = 'Leyenda';
-  @Input() private progreso: number = 50;
+  @Input() public leyenda: string = 'Leyenda';
+  @Input() public progreso: number = 50;
   @Output() private cambioValor: EventEmitter<number> = new EventEmitter();
 
 

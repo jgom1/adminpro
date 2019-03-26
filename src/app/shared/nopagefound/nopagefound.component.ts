@@ -30,7 +30,7 @@ declare function init_plugins();
 export class NopagefoundComponent implements OnInit {
 
   // Propiedade para mostrar no  html o ano de forma dinámica.
-  private anio: number = new Date().getFullYear();
+  public anio: number = new Date().getFullYear();
 
   constructor () { }
 
